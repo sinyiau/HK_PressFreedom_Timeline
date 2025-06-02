@@ -1,0 +1,146 @@
+/* style.css - 極簡深色主題 (更新於 2025-06-02) */
+
+/* 1. 全域 box-sizing 重設 */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* 2. Body 基本樣式 - 背景統一為 #222222 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    line-height: 1.6;
+    background-color: #222222; /* 所有背景統一為 #222222 */
+    color: #f0f0f0; /* 主要文字：淺灰色 */
+}
+
+/* 3. 頁首 (Header) 和頁尾 (Footer) 樣式 */
+header {
+    background-color: #222222; /* 背景統一為 #222222 */
+    padding: 1.5em 1em;
+    text-align: center;
+    color: #f0f0f0;
+    /* border: none; */ /* 移除頁首頁尾的邊框 */
+}
+
+footer {
+    background-color: #4f4f4f; /* 背景統一為 #222222 */
+    padding: 1.5em 1em;
+    text-align: center;
+    color: #f0f0f0;
+    /* border: none; */ /* 移除頁首頁尾的邊框 */
+}
+
+header {
+     border-bottom: none; /* 明確移除頁首底部邊框 */
+}
+
+header h1 {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #ffffff; /* 標題文字：白色 */
+    /* background-color: transparent; */ /* 移除標題獨立背景色 */
+    /* padding: 0; */ /* 移除因背景色而設的內邊距 */
+    /* display: block; */ /* 恢復標題預設的display屬性 */
+    /* border-radius: 0; */ /* 移除圓角 */
+}
+
+footer {
+    margin-top: 40px;
+    border-top: none; /* 明確移除頁尾頂部邊框 */
+}
+
+/* 4. 時間軸主容器 (.timeline-container) */
+.timeline-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 15px;
+    background-color: #222222; /* 背景統一為 #222222 */
+}
+
+/* 5. 三欄佈局的子項目 (Flex Items) */
+.timeline-left {
+    flex: 1;
+    padding: 20px;
+    background-color: #222222; /* 背景統一為 #222222 */
+    /* border-right: none; */ /* 移除側邊欄邊框 */
+}
+
+.main-content {
+    flex: 3;
+    padding: 20px;
+    background-color: #222222; /* 背景統一為 #222222 */
+}
+
+.timeline-right {
+    flex: 1;
+    padding: 20px;
+    background-color: #222222; /* 背景統一為 #222222 */
+    /* border-left: none; */ /* 移除側邊欄邊框 */
+}
+
+/* 6. 中間主要內容區域的每個 <section> 樣式 */
+.main-content section {
+    padding: 25px 0; /* 上下padding保留，左右padding移除或設為0，避免與main-content的padding重複 */
+    margin-bottom: 35px;
+    background-color: #222222; /* 背景統一為 #222222 */
+    border: none; /* 確認移除邊框 */
+    border-radius: 0; /* 移除圓角，追求更平整效果 */
+    box-shadow: none; /* 確認移除陰影 */
+}
+
+/* 區塊內的標題 */
+.main-content section h2,
+.main-content section h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #ffffff; /* 標題文字：白色 */
+    /* background-color: transparent; */ /* 移除標題獨立背景色 */
+    /* padding: 0; */ /* 移除因背景色而設的內邊距 */
+    /* display: block; */ /* 恢復標題預設屬性 */
+    /* border-radius: 0; */ /* 移除圓角 */
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+.main-content section h2 {
+    font-size: 1.8em;
+}
+.main-content section h3 {
+    font-size: 1.5em;
+}
+
+/* 7. 中間內容區塊內的圖片和圖片來源樣式 */
+.content-image-container {
+    margin-bottom: 15px;
+}
+
+.content-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px; /* 圖片的圓角可以保留，讓圖片柔和一些 */
+}
+
+.image-source {
+    font-size: 0.75em;
+    color: #bbbbbb;
+    text-align: right;
+    margin-top: 8px;
+    padding-right: 5px;
+}
+
+/* 8. 左右時間軸上的標記點 (佔位符樣式) */
+.timeline-event-marker,
+.timeline-rank-marker {
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #333333; /* 標記點背景可以稍微亮一點以作區分 */
+    border: 1px solid #444444; /* 標記點邊框 */
+    color: #f0f0f0;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 4px;
+}
