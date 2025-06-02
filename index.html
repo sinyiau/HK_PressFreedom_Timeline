@@ -3,54 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>香港新聞自由時間軸</title>
+    <title>Hong Kong Press Freedom Timeline</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <header>
-        <h1>香港新聞自由變遷史 (佔位標題)</h1>
+        <h1>The Erosion of Press Freedom in Hong Kong</h1>
+        <h1>1997-2025</h1>
     </header>
 
     <div class="timeline-container">
         <aside class="timeline-left">
-            <h2>重大事件時間軸 (左)</h2>
-            <div class="timeline-event-marker" id="marker-event-1">事件點1</div>
-            <div class="timeline-event-marker" id="marker-event-2">事件點2</div>
+            <div id="sticky-left-display">
+                <div class="sticky-marker-large-text"></div>
+            </div>
+
+            <div class="timeline-event-marker" id="marker-1997" data-marker-year="1997">
+                <div class="marker-large-text">1997</div>
+            </div>
+            <div class="timeline-event-marker" id="marker-2003" data-marker-year="2003">
+            <div class="marker-large-text">2003</div>
+            </div>
+
+            <div class="timeline-event-marker" id="marker-2020" data-marker-year="2020">
+                <div class="marker-large-text">2020</div>
+            </div>
             </aside>
 
         <main class="main-content">
             <section id="content-intro">
-                <h2>引言 (佔位內容)</h2>
-                <p>這裡是對整個時間軸專題的簡要介紹。隨著下方滾動，您將看到不同時期的詳細內容。</p>
+                <h2>By Sinyi Au</h2>
+                <p>Brief intro</p>
             </section>
 
-            <section id="content-event-1">
+            <section id="content-event-1" data-year="1997">
                 <figure class="content-image-container">
-                    <img src="https://via.placeholder.com/600x300.png?text=Event+1+Image" alt="事件1的說明圖片">
-                    <figcaption class="image-source">圖片來源：[此處填寫圖片來源]</figcaption>
+                    <img src="https://cdn.i-scmp.com/sites/default/files/images/methode/2018/05/02/20dd0938-4d4d-11e8-9150-83bd875cc143_image_hires_162415.JPG" alt="Hong Kong Hanover 1997">
+                    <figcaption class="image-source">Source: South China Morning Post</figcaption>
                 </figure>
-                <h3>事件標題 1 (佔位)</h3>
-                <p>這裡是與「事件點1」相關的詳細描述和分析。Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <p>可以包含引言等其他文字內容。</p>
+                <h3>Handover of Hong Kong </h3>
+                <p>
+                    Hong Kong was known for its vibrant and free media before the 1997 handover<a href="https://thecfhk.org/press-freedom/" target="_blank" rel="noopener noreferrer" class="source-link">[1]</a>, 
+                    and the transitional period was described as the time when the city’s press enjoyed an 
+                    “unprecedented degree of freedom<a href="https://journals.openedition.org/chinaperspectives/8009" target="_blank" rel="noopener noreferrer" class="source-link">[2]</a>.” 
+                    
+                    <p>In the first few years after 1997, the Beijing government granted a considerable degree of freedom 
+                    by relying on “disciplining the Hong Kong press through self-censorship<a href="https://blogs.lse.ac.uk/medialse/2024/12/05/freedom-of-the-press-in-hong-kong/" target="_blank" rel="noopener noreferrer" class="source-link">[3]</a>.” </p>
+
+                    Then chairperson of the Hong Kong Journalists Association, Mak Yin-ting, expressed concern<a href="https://ro.uow.edu.au/artspapers/747/" target="_blank" rel="noopener noreferrer" class="source-link">[4]</a> 
+                    about the “Chinese model” of press freedom with which Hong Kong journalists were unfamiliar.
+                </p>
             </section>
 
-            <section id="content-event-2">
-                <h3>事件標題 2 (佔位)</h3>
-                <p>這裡是與「事件點2」相關的詳細描述和分析。Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <section id="content-event-2" data-year="2003">
+                <figure class="content-image-container">
+                    <img src="https://hongkongfp.com/wp-content/uploads/2018/12/COVER-STORY-02.jpg" alt="2003 Protest">
+                    <figcaption class="image-source">Source: Hong Kong Free Press</figcaption>
+                </figure>
+                <h3>Article 23 Legislation Attempt</h3>
+                <p>
+                    The Hong Kong government pushed for the legislation of Article 23 of the Basic Law, which prohibits acts such as treason, secession, sedition and subversion against the Central People's Government, as well as the theft of state secrets<a href="https://academiccommons.columbia.edu/doi/10.7916/12aq-p590" target="_blank" rel="noopener noreferrer" class="source-link">[1]</a>. 
+                    The equivalent national security law sparked concern in the media that it would severely restrict press freedom, particularly with regard to reporting on sensitive issues involving China or criticizing the authorities<a href="https://www.nomos-elibrary.de/10.5771/0506-7286-2012-1-56.pdf?download_full_pdf=1" target="_blank" rel="noopener noreferrer" class="source-link">[2]</a>.
+                </p>
+                <p>
+                    On July 1, 2003, an estimated 500,000 people protested against the bill<a href="https://www.amnesty.org/en/latest/news/2024/01/hong-kong-article-23-legislation-a-dangerous-moment-for-human-rights/" target="_blank" rel="noopener noreferrer" class="source-link">[3]</a>. 
+                    This unprecedented level of public opposition demonstrated widespread anxiety about the bill's potential impact on freedom<a href="https://hongkongfp.com/2018/02/17/article-23-the-rise-and-fall-of-hong-kongs-2003-national-security-bill-part-1/" target="_blank" rel="noopener noreferrer" class="source-link">[4]</a>.
+                </p>
+                <p>
+                    Faced with overwhelming public opposition and the collapse of support within the legislature, Hong Kong's first Chief Executive Tung Chee-hwa announced the withdrawal of the bill<a href="https://hongkongfp.com/2018/02/17/article-23-the-rise-and-fall-of-hong-kongs-2003-national-security-bill-part-1/" target="_blank" rel="noopener noreferrer" class="source-link">[5]</a>.
+                </p>
             </section>
             </main>
 
         <aside class="timeline-right">
-            <h2>新聞自由排名 (右)</h2>
-            <div class="timeline-rank-marker" id="marker-rank-1">排名點A</div>
-            <div class="timeline-rank-marker" id="marker-rank-2">排名點B</div>
+            <h2>Hong Kong's Ranking in the World Press Freedom Index</h2>
+            <div class="timeline-rank-marker" id="marker-rank-1">
+                <div class="marker-large-text">56</div>
+                <div class="marker-small-text">↓38</div>
+            </div>
+            <div class="timeline-rank-marker" id="marker-rank-2">
+                <div class="marker-large-text">70</div>
+                <div class="marker-small-text">↓5</div>
+            </div>
             </aside>
     </div>
 
     <footer>
-        <p>專案結語或資料來源 (佔位)</p>
+        <p>2025. Northwestern Medill Journalist Aboard Final Project.</p>
     </footer>
+    
+    <script src="script.js"></script> 
+</body>
 
-    </body>
 </html>
