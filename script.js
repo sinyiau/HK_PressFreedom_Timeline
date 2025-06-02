@@ -1,96 +1,129 @@
-// script.js - 更新版，實現更可靠的“浮現”和“消失”效果
+// script.js - 更新版，處理左右兩側固定顯示區的顯隱和內容更新
 
 document.addEventListener('DOMContentLoaded', () => {
-    const mainContentSections = document.querySelectorAll('.main-content section[data-year]'); // 只選取有 data-year 的 section
-    const stickyElement = document.getElementById('sticky-left-display');
-    const stickyDisplayLargeText = stickyElement ? stickyElement.querySelector('.sticky-marker-large-text') : null;
+    const mainContentSections = document.querySelectorAll('.main-content section[data-year]');
+    
+    // 左側固定顯示元素
+    const stickyLeftElement = document.getElementById('sticky-left-display');
+    const stickyLeftLargeText = stickyLeftElement ? stickyLeftElement.querySelector('.sticky-marker-large-text') : null;
 
-    if (!stickyElement || !stickyDisplayLargeText) {
-        console.error('Sticky display elements not found in HTML. Please check IDs (#sticky-left-display) and class (.sticky-marker-large-text).');
-        return;
+    // 右側固定顯示元素
+    const stickyRightElement = document.getElementById('sticky-right-display');
+    const stickyRightLargeText = stickyRightElement ? stickyRightElement.querySelector('.sticky-marker-large-text') : null;
+    const stickyRightSmallText = stickyRightElement ? stickyRightElement.querySelector('.sticky-marker-small-text') : null;
+    
+    // 右側時間軸標題 (可選，如果也想JS控制顯隱)
+    // const rightTimelineTitle = document.getElementById('right-timeline-title');
+
+    if (!stickyLeftElement || !stickyLeftLargeText) {
+        console.error('Left sticky display elements not found. Check #sticky-left-display and .sticky-marker-large-text.');
+    }
+    if (!stickyRightElement || !stickyRightLargeText || !stickyRightSmallText) {
+        console.error('Right sticky display elements not found. Check #sticky-right-display and its children.');
     }
 
-    // 從 HTML 的 .timeline-event-marker 讀取年份數據
-    const markerData = {};
+    // 1. 讀取左側事件數據
+    const eventMarkerData = {};
     document.querySelectorAll('.timeline-left .timeline-event-marker[data-marker-year]').forEach(marker => {
         const year = marker.dataset.markerYear;
         const largeTextElement = marker.querySelector('.marker-large-text');
+        // const smallTextElement = marker.querySelector('.marker-small-text'); // 如果你將來要加回小字
         if (year && largeTextElement) {
-            markerData[year] = {
+            eventMarkerData[year] = {
                 largeText: largeTextElement.textContent.trim()
+                // smallText: smallTextElement ? smallTextElement.textContent.trim() : ''
             };
         }
     });
 
-    let currentlyDisplayedYear = null; // 用於追蹤當前固定顯示區顯示的年份
+    // 2. 讀取右側排名數據
+    const rankingMarkerData = {};
+    document.querySelectorAll('.timeline-right .timeline-rank-marker[data-marker-year]').forEach(marker => {
+        const year = marker.dataset.markerYear;
+        const largeTextElement = marker.querySelector('.marker-large-text');
+        const smallTextElement = marker.querySelector('.marker-small-text');
+        if (year && largeTextElement && smallTextElement) { // 確保所有元素都存在
+            rankingMarkerData[year] = {
+                largeText: largeTextElement.textContent.trim(),
+                smallText: smallTextElement.textContent.trim()
+            };
+        }
+    });
 
-    // Intersection Observer 的設定
-    // rootMargin: '0px 0px -X% 0px' 
-    //   -X% 負的底部邊距，意味著當元素的底部距離視窗底部還有X%時 (即元素出現在視窗上半部分時)，
-    //   視為進入觀察區。X值越大，觸發點越靠上。
-    //   例如 '-40%' 表示元素在視窗上半部約60%區域時開始觸發。
-    //   '-50%' 表示元素在中線以上時觸發。
-    // threshold: 0.1 表示元素至少10%可見時。
-    // 你可以調整這些值來找到最適合你的觸發時機。
+    // Intersection Observer 設定
     const observerOptions = {
         root: null,
-        rootMargin: '0px 0px -50% 0px', // 嘗試調整此處，例如讓元素更靠中間時觸發
-        threshold: 0.01 // 元素稍微可見就觸發，主要依賴 rootMargin
+        rootMargin: '0px 0px -50% 0px', // 當元素中心線到達視窗中心線時觸發
+        threshold: 0.01 // 元素稍微可見就觸發
     };
+
+    let currentlyDisplayedYear = null;
 
     const intersectionCallback = (entries) => {
         let activeSection = null;
-
-        // 遍歷所有狀態改變的 entries，找到那個應該“激活”的 section
-        // 我們選擇在視窗內（根據 rootMargin 判斷）且最靠上的那個
-        // （或者在滾動方向上最後一個滿足條件的）
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // 如果有多個 section isIntersecting，我們需要一個規則來選擇哪一個是“當前”的。
-                // 一個簡單的規則是選取 boundingClientRect.top 最小（最靠上）且為正數，
-                // 或者 entry.intersectionRatio 最大的。
-                // 為簡化，且假設我們的 rootMargin 設定得當，
-                // 這裡我們傾向於取 entries 中最後一個 isIntersecting 的元素。
-                // 或者，我們可以總是檢查所有被觀察的元素，但那樣效率較低。
-                // 目前這個邏輯會讓滾動時，最後一個觸發 isIntersecting=true 的 section 被選中。
-                activeSection = entry.target;
-            }
-        });
-        
-        // 收集所有當前真正在視窗內（符合IO條件）的 section
-        const visibleSections = entries.filter(entry => entry.isIntersecting)
-                                     .map(entry => entry.target)
-                                     .sort((a, b) => a.offsetTop - b.offsetTop); // 按頂部位置排序
+        const visibleSections = entries
+            .filter(entry => entry.isIntersecting)
+            .map(entry => entry.target)
+            .sort((a, b) => a.offsetTop - b.offsetTop); // 按頂部位置排序
 
         if (visibleSections.length > 0) {
-            // 通常我們關心的是在特定觸發區域內 "最主要" 的那個
-            // 這裡我們簡單取第一個（最靠頂部的那個符合條件的）
-            activeSection = visibleSections[0]; 
-            const sectionYear = activeSection.dataset.year;
+            activeSection = visibleSections[0]; // 取最靠上的那個活躍 section
+        }
 
+        if (activeSection) {
+            const sectionYear = activeSection.dataset.year;
             if (sectionYear && sectionYear !== currentlyDisplayedYear) {
                 currentlyDisplayedYear = sectionYear;
-                const dataForYear = markerData[sectionYear];
-                const textToShow = (dataForYear && dataForYear.largeText) ? dataForYear.largeText : sectionYear;
-                
-                stickyDisplayLargeText.textContent = textToShow;
-                stickyElement.classList.add('is-visible');
-                console.log(`Displaying year: ${sectionYear}`);
+                console.log(`Updating displays for year: ${sectionYear}`);
 
-            } else if (sectionYear && sectionYear === currentlyDisplayedYear && !stickyElement.classList.contains('is-visible')) {
-                // 如果是同一年份但之前被隱藏了，則重新顯示
-                stickyElement.classList.add('is-visible');
+                // 更新左側顯示
+                if (stickyLeftElement && stickyLeftLargeText) {
+                    const eventData = eventMarkerData[sectionYear];
+                    stickyLeftLargeText.textContent = (eventData && eventData.largeText) ? eventData.largeText : sectionYear;
+                    stickyLeftElement.classList.add('is-visible');
+                }
+
+                // 更新右側顯示
+                if (stickyRightElement && stickyRightLargeText && stickyRightSmallText) {
+                    const rankData = rankingMarkerData[sectionYear];
+                    if (rankData) {
+                        stickyRightLargeText.textContent = rankData.largeText;
+                        stickyRightSmallText.textContent = rankData.smallText;
+                        stickyRightElement.classList.add('is-visible');
+                        // // 可選：控制右側標題的顯隱 (例如從2003年開始顯示)
+                        // if (rightTimelineTitle) {
+                        //     parseInt(sectionYear) >= 2003 ? rightTimelineTitle.classList.add('is-visible') : rightTimelineTitle.classList.remove('is-visible');
+                        // }
+                    } else {
+                        // 如果該年份沒有排名數據，則隱藏右側排名顯示
+                        stickyRightLargeText.textContent = '';
+                        stickyRightSmallText.textContent = '';
+                        stickyRightElement.classList.remove('is-visible');
+                    }
+                }
+            } else if (sectionYear && sectionYear === currentlyDisplayedYear) {
+                // 如果是同一年份，確保它們是可見的 (例如頁面初始載入時)
+                if (stickyLeftElement && !stickyLeftElement.classList.contains('is-visible') && stickyLeftLargeText.textContent) {
+                    stickyLeftElement.classList.add('is-visible');
+                }
+                if (stickyRightElement && !stickyRightElement.classList.contains('is-visible') && stickyRightLargeText.textContent) {
+                    stickyRightElement.classList.add('is-visible');
+                }
             }
-        } else {
-            // 如果 entries 中沒有任何元素是 isIntersecting (表示之前活躍的元素移出去了，且沒有新的進來)
-            // 或者所有可見的 section 都沒有 data-year
-            // 這種情況下，我們需要判斷是否真的沒有任何被觀察的 section 處於 active 狀態
-            // 一個更穩妥的做法是，如果 visibleSections 為空，則隱藏
+        } else { // 沒有任何 active section
             if (currentlyDisplayedYear !== null) { // 只有當之前有顯示內容時才操作隱藏
-                stickyDisplayLargeText.textContent = ''; // 清空文字
-                stickyElement.classList.remove('is-visible'); // 隱藏元素
-                currentlyDisplayedYear = null; // 重置狀態
-                console.log('Hiding sticky display');
+                console.log('No active section, hiding sticky displays.');
+                if (stickyLeftElement && stickyLeftLargeText) {
+                    stickyLeftLargeText.textContent = '';
+                    stickyLeftElement.classList.remove('is-visible');
+                }
+                if (stickyRightElement && stickyRightLargeText && stickyRightSmallText) {
+                    stickyRightLargeText.textContent = '';
+                    stickyRightSmallText.textContent = '';
+                    stickyRightElement.classList.remove('is-visible');
+                }
+                // if (rightTimelineTitle) rightTimelineTitle.classList.remove('is-visible'); // 如果標題也受JS控制
+                currentlyDisplayedYear = null;
             }
         }
     };
@@ -100,6 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mainContentSections.length > 0) {
         mainContentSections.forEach(section => observer.observe(section));
     } else {
-        console.warn('No sections found to observe. Ensure .main-content section[data-year] exists.');
+        console.warn('No sections with [data-year] found to observe.');
     }
 });
