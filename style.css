@@ -1,16 +1,15 @@
-/* style.css - 極簡深色主題 (更新於 2025-06-02) - 調整側邊欄內邊距 */
+/* style.css - 極簡深色主題 (更新於 2025-06-02) - 圖片滿欄寬 */
 
 /* 1. 全域 box-sizing 重設 */
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
-/* 2. Body 基本樣式 */
+/* 2. Body 基本樣式 - 背景統一為 #222222 */
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Ancizar Serif', serif;
-    font-weight: 400;
+    font-family: 'Roboto', Arial, 'Helvetica Neue', Helvetica, sans-serif;
     line-height: 1.6;
     background-color: #222222;
     color: #f0f0f0;
@@ -22,15 +21,15 @@ header {
     padding: 7em 1em 1.5em 1em;
     text-align: center;
     color: #f0f0f0;
+    border-bottom: none;
 }
 
 header h1 {
-    max-width: 696px; 
+    max-width: 522px; /* 中間欄 60% of (900px-30px container padding) = 522px */
     margin: 0 auto;
-    font-family: 'Ancizar Serif', serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     color: #ffffff;
-    text-align: left;
 }
 
 footer {
@@ -39,51 +38,43 @@ footer {
     text-align: center;
     color: #f0f0f0;
     margin-top: 40px;
+    border-top: none;
 }
 
 /* 4. 時間軸主容器 (.timeline-container) */
 .timeline-container {
     display: flex;
+    justify-content: center;
     max-width: 900px;
     margin: 30px auto;
-    padding: 0 15px;
+    padding: 0 15px; /* 容器本身的左右內邊距 */
     background-color: #222222;
-    /* min-height: 200px; */ /* 移除除錯用最小高度 */
 }
 
-/* 5. 三欄佈局的子項目 (Flex Items) - 更新padding */
+/* 5. 三欄佈局的子項目 (Flex Items) */
 .timeline-left {
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: 10%;
-    padding: 10px 5px; /* 減少 padding: 上下10px, 左右5px */
+    flex: 0 1 10%;
+    padding: 20px; /* 側邊欄自身的內邊距 */
     background-color: #222222;
-    /* min-height: 100px; */ /* 移除除錯用最小高度 */
-    overflow: hidden;
 }
 
 .main-content {
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: 80%;
-    padding: 20px; /* 中間欄 padding 保持不變或按需調整 */
+    flex: 0 1 60%;
+    padding: 20px; /* 中間欄自身的內邊距 (上下左右) */
     background-color: #222222;
-    /* min-height: 100px; */ /* 移除除錯用最小高度 */
 }
 
 .timeline-right {
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: 10%;
-    padding: 10px 5px; /* 減少 padding: 上下10px, 左右5px */
+    flex: 0 1 10%;
+    padding: 20px; /* 側邊欄自身的內邊距 */
     background-color: #222222;
-    /* min-height: 100px; */ /* 移除除錯用最小高度 */
-    overflow: hidden;
 }
 
 /* 6. 中間主要內容區域的每個 <section> 樣式 */
 .main-content section {
-    padding: 25px 0;
+    /* padding: 25px 0; */ /* Section本身的上下padding，左右為0 */
+    /* 如果希望section內的文字也與main-content的padding對齊，這裡的左右padding應該是0 */
+    /* 如果希望圖片下方的文字區塊有自己的左右padding，則在此處設定 */
     margin-bottom: 35px;
     background-color: #222222;
     border: none;
@@ -94,29 +85,35 @@ footer {
 /* 區塊內的標題 (h2, h3) */
 .main-content section h2,
 .main-content section h3 {
-    font-family: 'Ancizar Serif', serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     color: #ffffff;
     margin-top: 0;
     margin-bottom: 20px;
+    /* 標題會自然受到 section 或 main-content 的 padding 約束 */
 }
-.main-content section h2 { font-size: 1.8em; }
-.main-content section h3 { font-size: 1.5em; }
+.main-content section h2 {
+    font-size: 1.8em;
+}
+.main-content section h3 {
+    font-size: 1.5em;
+}
 
 /* 7. 中間內容區塊內的圖片和圖片來源樣式 */
-.content-image-container {
-    width: calc(100% + 40px); /* .main-content padding 左右各20px，所以+40px */
-    margin-left: -20px;       /* 對應 .main-content padding-left */
-    margin-right: -20px;      /* 對應 .main-content padding-right */
-    margin-bottom: 25px;
+.content-image-container { /* 這是 <figure> 元素 */
+    width: calc(100% + 40px); /* 擴展寬度以抵銷 .main-content 的左右 padding (20px*2) */
+    margin-left: -20px;       /* 向左移動20px */
+    margin-right: -20px;      /* 向右移動20px (雖然通常設width和左margin就夠了) */
+    margin-bottom: 25px;      /* 圖片容器和下方內容的間距，可以調整 */
 }
 
 .content-image-container img {
-    width: 100%;
-    max-width: 100%;
+    width: 100%;       /* 圖片寬度充滿其新的、擴展後的父容器 (figure) */
+    max-width: 100%;   /* 確保最大寬度不超過父容器 */
     height: auto;
     display: block;
-    border-radius: 0px;
+    border-radius: 0px; /* 如果希望滿版圖片沒有圓角 */
+    /* border-radius: 4px; */ /* 如果希望圖片本身仍有輕微圓角 */
 }
 
 .image-source {
@@ -124,87 +121,48 @@ footer {
     color: #bbbbbb;
     text-align: right;
     margin-top: 8px;
-    padding-right: 20px; /* 讓此元素對齊 .main-content 的右內邊距 */
+    /* 圖片來源會顯示在滿版圖片的下方，但仍在 figure 內 */
+    /* 如果希望來源文字也回到 main-content 的 padding 內，需要額外處理 */
+    padding-right: 20px; /* 讓圖片來源文字與 main-content 右側padding對齊 */
 }
 
-/* 8. 左側固定顯示區域樣式 (Sticky Display) - 更新padding */
-#sticky-left-display {
-    position: sticky;
-    top: 20px;
-    width: 100%;
-    padding: 8px 5px; /* 減少 padding: 上下8px, 左右5px */
-    background-color: #333333;
-    border-radius: 6px;
-    margin-bottom: 20px; /* 可調整與下方內容(如果有的話)的間距 */
+/* 8. 左右時間軸上的標記點樣式 (以及內部文字樣式) */
+.timeline-event-marker {
+    padding: 15px;
+    margin-bottom: 15px;
+    color: #f0f0f0;
     text-align: center;
-    z-index: 10;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease-in-out;
-    /* min-height: 50px; */ /* 移除除錯用最小高度 */
+    font-family: 'Ancizar Serif', serif; /* 確保字體一致 */
+    background-color: #222222;
+    opacity: 0.6; /* 讓列表中的標記點稍微暗淡 */
+    /* transition: opacity 0.3s ease, background-color 0.3s ease; */ /* 如果不需要高亮動畫可以移除 */
 }
 
-#sticky-left-display.is-visible {
-    opacity: 1;
-    visibility: visible;
+/* 你現有的 .marker-large-text 和 .marker-small-text 樣式不受影響 */
+/* 但你可以考慮在 .active-marker 狀態下也調整它們的顏色 */
+.timeline-event-marker.active-marker .marker-large-text {
+    color: #ffffff; /* 例如，讓活躍的年份更白 */
+}
+.timeline-event-marker.active-marker .marker-small-text {
+    color: #f0f0f0; /* 例如，讓活躍的事件名更清晰 */
 }
 
-#sticky-left-display .sticky-marker-large-text {
-    font-family: 'Ancizar Serif', serif;
-    font-size: 2.0em; /* 保持2.0em，觀察在新padding下是否足夠 */
+.marker-large-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.8em;
     font-weight: 700;
     color: #ffffff;
     line-height: 1.1;
-    overflow-wrap: break-word;
+    margin-bottom: 5px;
 }
 
-/* 右側固定顯示區域樣式 (Sticky Display) - 更新padding */
-#sticky-right-display {
-    position: sticky;
-    top: 20px;
-    width: 100%;
-    padding: 8px 5px; /* 減少 padding: 上下8px, 左右5px */
-    background-color: #333333;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    text-align: center;
-    z-index: 10;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease-in-out;
-    /* min-height: 50px; */ /* 移除除錯用最小高度 */
+.marker-small-text {
+    font-size: 0.85em;
+    color: #bbbbbb;
+    line-height: 1.3;
 }
 
-#sticky-right-display.is-visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-#sticky-right-display .sticky-marker-large-text,
-#sticky-right-display .sticky-marker-small-text {
-    font-family: 'Ancizar Serif', serif;
-    color: #ffffff; /* 大字和小字都用白色，或按需調整小字顏色 */
-    overflow-wrap: break-word;
-}
-#sticky-right-display .sticky-marker-large-text { 
-    font-size: 2.0em; /* 保持2.0em */
-    font-weight: 700; 
-    line-height: 1.1; 
-    margin-bottom: 5px; 
-}
-#sticky-right-display .sticky-marker-small-text { 
-    font-size: 0.85em; 
-    color: #bbbbbb; 
-    line-height: 1.3; 
-}
-
-/* 9. 隱藏原始的時間軸標記點列表 */
-.timeline-left .timeline-event-marker,
-.timeline-right .timeline-rank-marker {
-    display: none;
-}
-
-/* 10. 註腳式連結樣式 */
+/* 9. 註腳式連結樣式 */
 .source-link {
     font-size: 0.75em;
     vertical-align: super;
@@ -213,7 +171,90 @@ footer {
     color: #8ab4f8;
     padding: 0 2px;
 }
+
 .source-link:hover {
     text-decoration: underline;
     color: #99c1f9;
+}
+
+/* 在你的 style.css 中找到或更新 #sticky-left-display 的樣式 */
+#sticky-left-display {
+    position: sticky;
+    top: 20px;
+    width: 100%; /* 新增：使其寬度不超過 .timeline-left 的內容區 */
+    padding: 15px;
+    background-color: #222222;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    text-align: center;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* #sticky-left-display.is-visible 的樣式保持不變 */
+#sticky-left-display.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 裡面的大字和小字樣式保持不變 (或按需調整字體為 Ancizar Serif) */
+#sticky-left-display .sticky-marker-large-text {
+    font-family: 'Ancizar Serif', serif; /* 確保字體是你想要的 */
+    font-size: 2.8em;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 5px;
+}
+
+.timeline-left .timeline-event-marker {
+    display: none; /* 將原來的標記點列表隱藏 */
+}
+
+/* 新增：右側固定顯示區域樣式 */
+#sticky-right-display {
+    position: sticky;
+    top: 20px;
+    width: 100%;
+    padding: 8px 5px; /* 與左側sticky display的padding保持一致 */
+    background-color: #333333; /* 背景色，使其與主背景有區分 */
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#sticky-right-display.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+#sticky-right-display .sticky-marker-large-text {
+    font-family: 'Ancizar Serif', serif; /* 沿用你為sticky display選擇的字體 */
+    font-size: 2.0em; /* 與左側sticky display的字號保持一致或按需調整 */
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 5px;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+#sticky-right-display .sticky-marker-small-text {
+    font-family: 'Ancizar Serif', serif; /* 沿用你為sticky display選擇的字體 */
+    font-size: 0.85em;
+    color: #bbbbbb;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+/* 確保原始的右側排名標記點也被隱藏 */
+.timeline-right .timeline-rank-marker {
+    display: none;
 }
